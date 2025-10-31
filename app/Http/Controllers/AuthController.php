@@ -24,22 +24,26 @@ class AuthController extends Controller
             return $this->validationResponse($validator->errors());
         }
 
-        if (!$token = Auth::attempt($request->only('email', 'password'))) {
+        if (!$token = auth('api')->attempt($request->only('email', 'password'))) {
             return $this->error(ResponseMessage::INVALID_LOGIN);
         }
 
-        $user = Auth::user()->load('business'); // eager load relation
+        $user = auth('api')->user()->load(['business', 'roles']);
+        $user->roles->each->makeHidden('pivot'); 
 
-        if (!$user->business) {
-            Auth::logout();
+        if (
+            !$user->business &&
+            !$user->roles->contains('name', 'Super Admin')
+        ) {
+            auth('api')->logout();
             JWTAuth::invalidate($token);
             return $this->error(ResponseMessage::INVALID_COMPANY_ATTACHED);
         }
 
-        $subscriptionEnd = $user->business->subscription_end_date;
+        $subscriptionEnd = isset($user->business) ? $user->business->subscription_end_date : null;
 
-        if ($subscriptionEnd && Carbon::now()->gt(Carbon::parse($subscriptionEnd))) {
-            Auth::logout();
+        if (isset($subscriptionEnd) && Carbon::now()->gt(Carbon::parse($subscriptionEnd))) {
+            auth('api')->logout();
             JWTAuth::invalidate($token);
             return $this->error(ResponseMessage::SUBSCRIPTION_EXPIRED);
         }

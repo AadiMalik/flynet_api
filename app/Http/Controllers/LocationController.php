@@ -31,7 +31,7 @@ class LocationController extends Controller
             'business_id' => 'nullable|exists:businesses,id',
         ]);
         $validator->sometimes('business_id', 'required', function ($input) {
-            return auth()->user() && auth()->user()->roles[0]->name === 'super admin';
+            return auth()->user() && auth()->user()->roles[0]->name === 'Super Admin';
         });
         if ($validator->fails()) {
             return $this->validationMessage($validator->errors());
@@ -84,7 +84,7 @@ class LocationController extends Controller
             'business_id' => 'nullable|exists:businesses,id',
         ]);
         $validator->sometimes('business_id', 'required', function ($input) {
-            return auth()->user() && auth()->user()->roles[0]->name === 'super admin';
+            return auth()->user() && auth()->user()->roles[0]->name === 'Super Admin';
         });
         if ($validator->fails()) {
             return $this->validationMessage($validator->errors());

@@ -48,6 +48,7 @@ class ResponseMessage
     const INVALID_LOGIN         = "Invalid login details.";
     const INVALID_CURRENT_PASSWORD      = "Invalid current password.";
     const INVALID_COMPANY_ATTACHED     = "Invalid company attached to this user.";
+    const UNAUTHORIZED = "Unauthorized";
     const LOGOUT                = "User logged out successfully.";
     const PASSWORD_CHANGED      = "Password changed successfully.";
     const OTP_SENT              = "OTP sent successfully.";

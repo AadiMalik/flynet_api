@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::post('login', [AuthController::class, 'login']);
 
-Route::group(['middleware' => ['auth']], function () {
+Route::middleware('auth:api')->group(function () {
 
     // subscription package feature
     Route::get('subscription-package-feature', [SubscriptionPackageFeatureController::class, 'index']);
