@@ -28,9 +28,9 @@ class SubscriptionPackageController extends Controller
             'duration_type' => 'required|in:week,month,year',
             'features' => 'required|array',
             'features.*' => 'required|exists:subscription_package_features,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -74,9 +74,9 @@ class SubscriptionPackageController extends Controller
             'duration_type' => 'required|in:week,month,year',
             'features' => 'required|array',
             'features.*' => 'required|exists:subscription_package_features,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -107,9 +107,9 @@ class SubscriptionPackageController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:subscription_packages,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $subscription_package = SubscriptionPackage::find($request->id);
         $subscription_package->is_active = $subscription_package->is_active == 1 ? 0 : 1;
@@ -121,9 +121,9 @@ class SubscriptionPackageController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:subscription_packages,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $subscription_package = SubscriptionPackage::find($request->id);
         $subscription_package->deletedby_id = auth()->user()->id;

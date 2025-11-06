@@ -6,7 +6,6 @@ use App\Enums\ResponseMessage;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use App\Traits\ResponseAPI;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -29,12 +28,12 @@ class LocationController extends Controller
             'address' => 'required|string|max:255',
             'logo' => 'required|png|jpg|jpeg|max:2048',
             'business_id' => 'nullable|exists:businesses,id',
-        ]);
+        ],$this->validationMessage());
         $validator->sometimes('business_id', 'required', function ($input) {
             return auth()->user() && auth()->user()->roles[0]->name === 'Super Admin';
         });
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -82,12 +81,12 @@ class LocationController extends Controller
             'address' => 'required|string|max:255',
             'logo' => 'required|png|jpg|jpeg|max:2048',
             'business_id' => 'nullable|exists:businesses,id',
-        ]);
+        ],$this->validationMessage());
         $validator->sometimes('business_id', 'required', function ($input) {
             return auth()->user() && auth()->user()->roles[0]->name === 'Super Admin';
         });
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -120,9 +119,9 @@ class LocationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:locations,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $location = Location::find($request->id);
         $location->is_active = $location->is_active == 1 ? 0 : 1;
@@ -134,9 +133,9 @@ class LocationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:locations,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $location = Location::find($request->id);
         $location->deletedby_id = auth()->user()->id;

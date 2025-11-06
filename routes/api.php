@@ -3,8 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubscriptionPackageController;
 use App\Http\Controllers\SubscriptionPackageFeatureController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +27,27 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
+
+    // permissions
+    Route::get('permissions', [PermissionController::class, 'index']);
+    Route::post('permission-save', [PermissionController::class, 'store']);
+    Route::get('permission-by-id/{permission_id}', [PermissionController::class, 'getById']);
+    Route::post('permission-update', [PermissionController::class, 'update']);
+    Route::post('permission-delete', [PermissionController::class, 'destroy']);
+
+    //Roles
+    Route::get('roles', [RoleController::class, 'index']);
+    Route::post('role-save', [RoleController::class, 'store']);
+    Route::get('role-by-id/{role_id}', [RoleController::class, 'getById']);
+    Route::post('role-update', [RoleController::class, 'update']);
+    Route::post('role-delete', [RoleController::class, 'destroy']);
+
+    // User
+    Route::get('users', [UserController::class, 'index']);
+    Route::post('user-save', [UserController::class, 'store']);
+    Route::get('user-by-id/{role_id}', [UserController::class, 'getById']);
+    Route::post('user-update', [UserController::class, 'update']);
+    Route::post('user-delete', [UserController::class, 'destroy']);
 
     // subscription package feature
     Route::get('subscription-package-feature', [SubscriptionPackageFeatureController::class, 'index']);

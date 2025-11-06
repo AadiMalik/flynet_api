@@ -33,9 +33,9 @@ class BusinessController extends Controller
             'website' => 'required|string|max:255',
             'logo' => 'required|png|jpg|jpeg|max:2048',
             'subscription_package_id' => 'required|exists:subscription_packages,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -93,9 +93,9 @@ class BusinessController extends Controller
             'website' => 'required|string|max:255',
             'logo' => 'required|png|jpg|jpeg|max:2048',
             'subscription_package_id' => 'required|exists:subscription_packages,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -134,9 +134,9 @@ class BusinessController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:businesses,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $business = Business::find($request->id);
         $business->is_active = $business->is_active == 1 ? 0 : 1;
@@ -148,9 +148,9 @@ class BusinessController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:businesses,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $business = Business::find($request->id);
         $business->deletedby_id = auth()->user()->id;

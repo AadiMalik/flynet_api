@@ -28,9 +28,9 @@ class SubscriptionPackageFeatureController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'required|string'
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -67,9 +67,9 @@ class SubscriptionPackageFeatureController extends Controller
             'id' => 'required|exists:subscription_package_features,id',
             'name' => 'required|string',
             'description' => 'required|string'
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         DB::beginTransaction();
 
@@ -98,9 +98,9 @@ class SubscriptionPackageFeatureController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:subscription_package_features,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $subscription_package_feature = SubscriptionPackageFeature::find($request->id);
         $subscription_package_feature->is_active = $subscription_package_feature->is_active == 1 ? 0 : 1;
@@ -112,9 +112,9 @@ class SubscriptionPackageFeatureController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:subscription_package_features,id',
-        ]);
+        ],$this->validationMessage());
         if ($validator->fails()) {
-            return $this->validationMessage($validator->errors());
+            return $this->validationResponse($validator->errors());
         }
         $subscription_package_feature = SubscriptionPackageFeature::find($request->id);
         $subscription_package_feature->delete();

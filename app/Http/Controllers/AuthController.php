@@ -28,7 +28,7 @@ class AuthController extends Controller
             return $this->error(ResponseMessage::INVALID_LOGIN);
         }
 
-        $user = auth('api')->user()->load(['business', 'roles']);
+        $user = auth('api')->user()->load(['business','roles','roles.permissions']);
         $user->roles->each->makeHidden('pivot'); 
 
         if (
