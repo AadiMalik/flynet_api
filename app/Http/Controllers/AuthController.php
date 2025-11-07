@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -51,4 +54,26 @@ class AuthController extends Controller
 
         return $this->success($user, ResponseMessage::LOGIN, 200);
     }
+
+    public function refresh()
+    {
+        try {
+            $newToken = auth('api')->refresh(); // get new token
+            return $this->success($newToken);
+        } catch (TokenExpiredException $e) {
+            return $this->error('Token expired, please login again');
+        } catch (TokenInvalidException $e) {
+            return $this->error('Invalid token');
+        } catch (JWTException $e) {
+            return $this->error('Token not provided');
+        }
+    }
+
+    public function logout()
+    {
+        auth('api')->logout();
+        return $this->success(null, ResponseMessage::LOGOUT, 200);
+    }
+
+
 }

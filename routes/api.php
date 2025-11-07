@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CameraController;
+use App\Http\Controllers\CommonController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -27,6 +29,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
+    //refresh token and logout
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    //common
+    Route::get('common', [CommonController::class, 'common']);
 
     // permissions
     Route::get('permissions', [PermissionController::class, 'index']);
@@ -80,4 +88,16 @@ Route::middleware('auth:api')->group(function () {
     Route::post('location-update', [LocationController::class, 'update']);
     Route::post('location-status', [LocationController::class, 'status']);
     Route::post('location-delete', [LocationController::class, 'destroy']);
+
+
+    //Companies api
+
+    //camera
+    Route::get('camera', [CameraController::class, 'index']);
+    Route::get('camera-count', [CameraController::class, 'cameraCount']);
+    Route::post('camera-save', [CameraController::class, 'store']);
+    Route::get('camera-by-id/{camera_id}', [CameraController::class, 'getById']);
+    Route::post('camera-update', [CameraController::class, 'update']);
+    Route::post('camera-status', [CameraController::class, 'status']);
+    Route::post('camera-delete', [CameraController::class, 'destroy']);
 });
